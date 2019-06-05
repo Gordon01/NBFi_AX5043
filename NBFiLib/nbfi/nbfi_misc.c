@@ -75,10 +75,7 @@ nbfi_transport_packet_t* NBFi_AllocateRxPkt(uint8_t header, uint8_t payload_leng
 		nbfi_active_pkt = &idle_pkt;
 	}
 	
-    if(nbfi_RX_pktBuf[ptr])
-    {
-        free(nbfi_RX_pktBuf[ptr]);
-    }
+    free(nbfi_RX_pktBuf[ptr]);
 
     nbfi_RX_pktBuf[ptr] = (nbfi_transport_packet_t *) malloc(sizeof(nbfi_transport_packet_t) + payload_length);
 
