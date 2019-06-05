@@ -96,6 +96,7 @@ nbfi_status_t RF_Init(  nbfi_phy_channel_t  phy_channel,
                         uint32_t            freq)
 {
     uint8_t er;
+	nbfi_status_t result = ERR;
 
     if(rf_busy) return ERR_RF_BUSY;
 
@@ -141,9 +142,8 @@ nbfi_status_t RF_Init(  nbfi_phy_channel_t  phy_channel,
         
         rf_busy = 0;
         rf_state = STATE_TX;
-        return OK;
-
-
+	    result = OK;
+	    break;
     case DL_PSK_200:
     case DL_PSK_FASTDL:
     case DL_PSK_500:
@@ -159,7 +159,8 @@ nbfi_status_t RF_Init(  nbfi_phy_channel_t  phy_channel,
         er = axradio_init();    // Init radio registers
         if (er != AXRADIO_ERR_NOERROR)
         {
-             rf_busy = 0; return ERR;
+			rf_busy = 0; 
+	        return ERR;
         }
         er = axradio_set_mode(AXRADIO_MODE_ASYNC_RECEIVE);
         rf_busy = 0;
@@ -168,17 +169,21 @@ nbfi_status_t RF_Init(  nbfi_phy_channel_t  phy_channel,
             return ERR;
         }
         rf_state = STATE_RX;
-        return OK;
+        result = OK;
+	    break;
     case OSC_CAL:
         axradio_set_mode(AXRADIO_MODE_ASYNC_RECEIVE);
         axradio_set_mode(AXRADIO_MODE_OFF);
         delay_ms(2);
         rf_state = STATE_OFF;
-
+	    break;
+    default:
+	    ax5043_tcxo_set_reset(0);
+	    rf_busy = 0;
+	    break;
     }
-    ax5043_tcxo_set_reset(0);
-    rf_busy = 0;
-    return ERR;
+	
+	return result;
 }
 
 extern void (*__ax5043_on_off_pwr)(uint8_t);

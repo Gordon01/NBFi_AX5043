@@ -3,7 +3,7 @@
 #include "nbfi_misc.h"
 #include "nbfi_phy.h"
 #include "rf.h"
-#include "xtea.h"
+#include "XTEA.h"
 #include "zcode.h"
 #include "zcode_e.h"
 #include <string.h>
@@ -164,11 +164,24 @@ nbfi_status_t NBFi_TX_ProtocolD(nbfi_transport_packet_t* pkt)
 
     }
 
-    if(nbfi.tx_phy_channel == DL_DBPSK_50_PROT_D) nbfi.tx_phy_channel = UL_DBPSK_50_PROT_D;
-    else if(nbfi.tx_phy_channel == DL_DBPSK_400_PROT_D) nbfi.tx_phy_channel = UL_DBPSK_400_PROT_D;
-    else if(nbfi.tx_phy_channel == DL_DBPSK_3200_PROT_D) nbfi.tx_phy_channel = UL_DBPSK_3200_PROT_D;
-    else if(nbfi.tx_phy_channel == DL_DBPSK_25600_PROT_D) nbfi.tx_phy_channel = UL_DBPSK_25600_PROT_D;
-
+	switch (nbfi.tx_phy_channel)
+	{
+	case DL_DBPSK_50_PROT_D:
+		nbfi.tx_phy_channel = UL_DBPSK_50_PROT_D;
+		break;
+	case DL_DBPSK_400_PROT_D:
+		nbfi.tx_phy_channel = UL_DBPSK_400_PROT_D;
+		break;
+	case DL_DBPSK_3200_PROT_D:
+		nbfi.tx_phy_channel = UL_DBPSK_3200_PROT_D;
+		break;
+	case DL_DBPSK_25600_PROT_D:
+		nbfi.tx_phy_channel = UL_DBPSK_25600_PROT_D;
+		break;
+	default:
+		break;
+	}
+	
     ul_buf[len++] = pkt->phy_data.header;
 
     memcpy_xdatageneric(&ul_buf[len], pkt->phy_data.payload, pkt->phy_data_length);
@@ -203,16 +216,26 @@ nbfi_status_t NBFi_TX_ProtocolD(nbfi_transport_packet_t* pkt)
         switch(nbfi.tx_phy_channel)
         {
             case UL_DBPSK_3200_PROT_D:
-              tx_freq = nbfi.ul_freq_base + 1600 + (((*((const uint32_t*)FULL_ID)+lastcrc8)%210)*100);
-              if(parity) tx_freq = tx_freq + 27500 - 1600;
-            break;
+				tx_freq = nbfi.ul_freq_base + 1600 + (((*((const uint32_t*)FULL_ID)+lastcrc8)%210)*100);
+				if(parity) 
+				{
+					tx_freq = tx_freq + 27500 - 1600;
+				}
+				break;
             case UL_DBPSK_25600_PROT_D:
-              tx_freq = nbfi.ul_freq_base + 12800;
-              if(parity) tx_freq = tx_freq + 25600;
+				tx_freq = nbfi.ul_freq_base + 12800;
+				if (parity)
+				{
+					tx_freq = tx_freq + 25600;
+				}
+				break;
             default:
-              tx_freq = nbfi.ul_freq_base + (((*((const uint32_t*)FULL_ID)+lastcrc8)%226)*100);
-              if(parity) tx_freq = tx_freq + 27500;
-            break;
+				tx_freq = nbfi.ul_freq_base + (((*((const uint32_t*)FULL_ID)+lastcrc8)%226)*100);
+				if (parity) 
+				{
+					tx_freq = tx_freq + 27500;
+				}
+				break;
         }
     }
 
@@ -278,7 +301,13 @@ nbfi_status_t NBFi_TX(nbfi_transport_packet_t* pkt)
 {
     nbfi_status_t result;
 
-    if((pkt->phy_data_length==0)&&(pkt->phy_data_length>240)) return ERR; // len check
+	if (	(pkt->phy_data_length == 0)
+		||	(pkt->phy_data_length > 240)	)
+	{
+		// len check
+		return ERR; 
+	}
+	
     switch(nbfi.tx_phy_channel)
     {
     case UL_DBPSK_50_PROT_D:
@@ -305,7 +334,11 @@ nbfi_status_t NBFi_TX(nbfi_transport_packet_t* pkt)
 
         RF_SetDstAddress((uint8_t *)&fastdladdress);
 
-        if((result = RF_Init(nbfi.tx_phy_channel, (rf_antenna_t)nbfi.tx_antenna, nbfi.tx_pwr, tx_freq)) != OK) return result;
+	    result = RF_Init(nbfi.tx_phy_channel, (rf_antenna_t)nbfi.tx_antenna, nbfi.tx_pwr, tx_freq);
+	    if (result != OK) 
+	    {
+		    return result;
+	    }
 
         uint8_t* buf = (uint8_t*) malloc(pkt->phy_data_length + 1 + 3);
         if(!buf) return ERR_BUFFER_FULL;
@@ -339,8 +372,17 @@ nbfi_status_t NBFi_RX_Controller()
     {
     case  DRX:
     case  NRX:
-        if(wait_RxEnd ) if(rf_state != STATE_RX)return NBFi_RX();
-        else break;
+	    if (wait_RxEnd) 
+	    {
+		    if (rf_state != STATE_RX)
+		    {
+			    return NBFi_RX();
+		    }
+	    }
+	    else 
+	    {
+		    break;
+	    }
         switch(nbfi_active_pkt->state)
         {
         case PACKET_WAIT_ACK:

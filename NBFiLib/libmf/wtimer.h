@@ -1,6 +1,7 @@
 #ifndef WTIMER_H
 #define WTIMER_H
 
+#include <stdint.h>
 #include "libmfwtimer.h"
 
 #ifdef WTIMER_TIM_CLK

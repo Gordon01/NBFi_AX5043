@@ -449,7 +449,8 @@ _Bool NBFi_Config_Parser(uint8_t* buf)
             break;
 
             case WRITE_PARAM_AND_SAVE_CMD:
-                NBFi_Config_Set_Default();
+				NBFi_Config_Set_Default();
+				break;
             case WRITE_PARAM_CMD:
                 memcpy_xdata(&nbfi_prev, &nbfi, sizeof(nbfi));
                 switch(buf[0]&0x3f)
@@ -636,7 +637,11 @@ void NBFi_ReadConfig(nbfi_settings_t *settings)
 
 	__nbfi_read_flash_settings(settings);
 
-	if((settings->tx_phy_channel != 0xff) && (settings->tx_phy_channel != 0)) return;
+	if (	(settings->tx_phy_channel != 0xff) 
+		&&	(settings->tx_phy_channel != 0)	)
+	{
+		return;
+	}
 
 read_default:
 

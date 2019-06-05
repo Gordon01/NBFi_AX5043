@@ -118,7 +118,6 @@ void NBFI_reg_func(uint8_t name, void* fn)
 {
 	switch(name)
 	{
-        break;
 	case NBFI_BEFORE_TX:
 		__nbfi_before_tx = (void(*)(NBFi_ax5043_pins_s*))fn;
 		break;
@@ -458,7 +457,7 @@ void NBFi_ParseReceivedPacket(struct axradio_status *st)
                 }
                 break;
                 
-            case 03:    //ACK on system packet received
+            case 0x03:    //ACK on system packet received
                 if((nbfi_active_pkt->state == PACKET_WAIT_ACK))
                 {
                     wtimer0_remove(&dl_receive_desc);
@@ -618,7 +617,6 @@ static void NBFi_ProcessTasks(struct wtimer_desc *desc)
             }
             break;
         default:
-
             pkt = NBFi_GetQueuedTXPkt();
             if(pkt)
             {
@@ -665,6 +663,7 @@ static void NBFi_ProcessTasks(struct wtimer_desc *desc)
             {
                     NBFi_RX_Controller();
             }
+	        break;
         }
     }
     else

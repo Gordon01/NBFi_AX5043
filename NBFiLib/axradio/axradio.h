@@ -34,6 +34,8 @@
 #ifndef AXRADIO_H
 #define AXRADIO_H
 
+#include <stdint.h>
+
 #define AXRADIO_MODE_UNINIT                     0x00
 #define AXRADIO_MODE_OFF                        0x01
 #define AXRADIO_MODE_DEEPSLEEP                  0x02

@@ -147,4 +147,5 @@ nbfi_state_t*   NBFi_get_state();
 uint8_t         NBFi_can_sleep();
 uint32_t        NBFi_get_RTC();
 void            NBFi_set_RTC(uint32_t time);
+
 #endif // NBFI_H

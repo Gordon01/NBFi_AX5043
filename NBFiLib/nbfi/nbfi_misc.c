@@ -68,16 +68,13 @@ nbfi_transport_packet_t* NBFi_AllocateRxPkt(uint8_t header, uint8_t payload_leng
 {
     uint8_t ptr = header&0x1f;
 
-    switch(nbfi_active_pkt->state)
-    {
-        case PACKET_QUEUED:
-        case PACKET_QUEUED_AGAIN:
-        case PACKET_WAIT_ACK:
-            nbfi_active_pkt = &idle_pkt;
-            break;
-
-    }
-
+	if (	(nbfi_active_pkt->state == PACKET_QUEUED)
+		||	(nbfi_active_pkt->state == PACKET_QUEUED_AGAIN)
+		||	(nbfi_active_pkt->state == PACKET_WAIT_ACK))
+	{
+		nbfi_active_pkt = &idle_pkt;
+	}
+	
     if(nbfi_RX_pktBuf[ptr])
     {
         free(nbfi_RX_pktBuf[ptr]);
@@ -109,34 +106,47 @@ nbfi_transport_packet_t* NBFi_GetQueuedTXPkt()
     for(uint8_t i = nbfi_TXbuf_head - NBFI_TX_PKTBUF_SIZE; i != nbfi_TXbuf_head; i++)
     {
         uint8_t ptr = i%NBFI_TX_PKTBUF_SIZE;
-        if(nbfi_TX_pktBuf[ptr] == 0) continue;
-        switch(nbfi_TX_pktBuf[ptr]->state )
-        {
-        case PACKET_NEED_TO_SEND_RIGHT_NOW:
-            return nbfi_TX_pktBuf[ptr];
-        }
+	    if (nbfi_TX_pktBuf[ptr] == 0)
+	    {
+		    continue;
+	    }
+	    
+	    if (nbfi_TX_pktBuf[ptr]->state == PACKET_NEED_TO_SEND_RIGHT_NOW)
+	    {
+		    return nbfi_TX_pktBuf[ptr];
+	    }
     }
 
     for(uint8_t i = nbfi_TXbuf_head - NBFI_TX_PKTBUF_SIZE; i != nbfi_TXbuf_head; i++)
     {
         uint8_t ptr = i%NBFI_TX_PKTBUF_SIZE;
-        if(nbfi_TX_pktBuf[ptr] == 0) continue;
-        switch(nbfi_TX_pktBuf[ptr]->state )
-        {
-        case PACKET_QUEUED_AGAIN:
-            return nbfi_TX_pktBuf[ptr];
-        }
+	    if (nbfi_TX_pktBuf[ptr] == 0) 
+	    {
+		    continue;
+	    }
+	    
+	    if (nbfi_TX_pktBuf[ptr]->state == PACKET_QUEUED_AGAIN)
+	    {
+		    return nbfi_TX_pktBuf[ptr];
+	    }
     }
     
     for(uint8_t i = nbfi_TXbuf_head - NBFI_TX_PKTBUF_SIZE; i != nbfi_TXbuf_head; i++)
     {
         uint8_t ptr = i%NBFI_TX_PKTBUF_SIZE;
-        if(nbfi_TX_pktBuf[ptr] == 0) continue;
+	    if (nbfi_TX_pktBuf[ptr] == 0)
+	    {
+		    continue;
+	    }
         switch(nbfi_TX_pktBuf[ptr]->state )
         {
         case PACKET_WAIT_ACK:
-            if(nbfi_TX_pktBuf[ptr] == nbfi_active_pkt) continue;
-             nbfi_TX_pktBuf[ptr]->state = PACKET_QUEUED_AGAIN;
+	        if (nbfi_TX_pktBuf[ptr] == nbfi_active_pkt)
+	        {
+		        continue;
+	        }
+            nbfi_TX_pktBuf[ptr]->state = PACKET_QUEUED_AGAIN;
+	        break;
         case PACKET_QUEUED:
             return nbfi_TX_pktBuf[ptr];
         }
@@ -183,14 +193,20 @@ uint8_t NBFi_Packets_To_Send()
         switch(nbfi_TX_pktBuf[ptr]->state )
         {
         case PACKET_WAIT_ACK:
-            if(nbfi_TX_pktBuf[ptr] == nbfi_active_pkt) break;
-             nbfi_TX_pktBuf[ptr]->state = PACKET_QUEUED_AGAIN;
+	        if (nbfi_TX_pktBuf[ptr] == nbfi_active_pkt) 
+	        {
+		        break;
+	        }
+            nbfi_TX_pktBuf[ptr]->state = PACKET_QUEUED_AGAIN;
         case PACKET_QUEUED:
         case PACKET_QUEUED_AGAIN:
         case PACKET_NEED_TO_SEND_RIGHT_NOW:
-             break;
+            break;
         case PACKET_SENT_NOACKED:
-            if(nbfi.mack_mode < MACK_2) break;
+	        if (nbfi.mack_mode < MACK_2) 
+	        {
+		        break;
+	        }
         default:
             packets_free++;
             continue;
