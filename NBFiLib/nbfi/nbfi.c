@@ -4,7 +4,7 @@
 #include "nbfi_misc.h"
 #include "nbfi_defines.h"
 #include "rf.h"
-#include "xtea.h"
+#include "XTEA.h"
 #include <stdlib.h>
 #include <wtimer.h>
 #include <string.h>

@@ -378,10 +378,10 @@ nbfi_status_t NBFi_RX_Controller()
 		    {
 			    return NBFi_RX();
 		    }
-	    }
-	    else 
-	    {
-		    break;
+		    else 
+		    {
+			    break;
+		    }
 	    }
         switch(nbfi_active_pkt->state)
         {

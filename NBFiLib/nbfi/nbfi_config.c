@@ -39,7 +39,6 @@ nbfi_dev_info_t dev_info =
     SEND_INFO_INTERVAL
 };
 
-
 const nbfi_settings_t nbfi_fastdl =
 {
     CRX,

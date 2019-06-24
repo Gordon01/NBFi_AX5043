@@ -65,8 +65,8 @@ extern nbfi_settings_t nbfi;
 
 typedef struct
 {
-        uint32_t modem_id;
-        uint32_t* key;
+    uint32_t modem_id;
+    uint32_t* key;
 	uint8_t tx_min_pwr;
 	uint8_t tx_max_pwr;
 	uint8_t hardware_id;
