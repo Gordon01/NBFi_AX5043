@@ -378,7 +378,7 @@ nbfi_status_t NBFi_RX_Controller()
 		    {
 			    return NBFi_RX();
 		    }
-		    else 
+		    else
 		    {
 			    break;
 		    }

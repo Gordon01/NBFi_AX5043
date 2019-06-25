@@ -66,11 +66,7 @@ const nbfi_settings_t nbfi_fastdl =
 
 
 NBFi_station_info_s nbfi_station_info = {0};
-
-extern uint8_t  string[50];
-
 nbfi_settings_t nbfi_prev;
-
 _Bool nbfi_settings_changed = 0;
 
 
@@ -186,7 +182,7 @@ void NBFI_Config_Check_State()
     if(you_should_dl_power_step_down && (nbfi_state.aver_rx_snr < RX_SNRLEVEL_FOR_UP)) you_should_dl_power_step_down = 0;
     if(you_should_dl_power_step_up && (nbfi_state.aver_rx_snr > RX_SNRLEVEL_FOR_DOWN)) you_should_dl_power_step_up = 0;
 
-     if(NBFI_Config_is_high_SNR_for_UP(TX_CONF)&& NBFI_Config_is_high_SNR_for_UP(RX_CONF))
+    if(NBFI_Config_is_high_SNR_for_UP(TX_CONF)&& NBFI_Config_is_high_SNR_for_UP(RX_CONF))
     {
         if(!NBFi_Config_Rate_Change(RX_CONF|TX_CONF, UP))
         {
@@ -342,15 +338,22 @@ void bigendian_cpy(uint8_t* from, uint8_t* to, uint8_t len)
     }
 }
 
-uint8_t CompVersion()
+/**
+ * @brief	Calculates compile timestamp in CRC-like fashion
+ *
+ * @returns	Single byte with compile time hash
+ */
+uint8_t NBFi_Compile_Time()
 {
+	uint8_t CompTime[] = __TIME__;
+	uint8_t ver = 0;
 
-    const char CompTime[] = "Simetime";//__TIME__;
-    const char* ptr;
-    uint8_t ver = 0;
-    ptr = &CompTime[0];
-    while(*ptr) ver += ((*(ptr++)) - 0x30);
-    return ver;
+	for (int i = 0; i < sizeof(CompTime); i++)
+	{
+		ver += ((CompTime[i] - 0x30) + i);
+	}
+
+	return ver;
 }
 
 _Bool NBFi_Config_Parser(uint8_t* buf)
@@ -415,7 +418,7 @@ _Bool NBFi_Config_Parser(uint8_t* buf)
                     case NBFI_PARAM_VERSION:
                         buf[1] = NBFI_REV;
                         buf[2] = NBFI_SUBREV;
-                        buf[3] = CompVersion();
+						buf[3] = NBFi_Compile_Time();
                         buf[4] = dev_info.hardware_id;
                         buf[5] = dev_info.hardware_rev;
                         buf[6] = dev_info.band_id;
