@@ -5,7 +5,8 @@
 /sample/sampleL0.xml
 /axradio/bin/
 /axradio/obj/
-/NBFiLib/doxygen
+/NBFiLib/docs/doxygen
+/NBFiLib/docs/_build
 /.metadata/
 settings/
 sample/sampleL0/
