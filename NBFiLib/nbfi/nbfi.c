@@ -958,6 +958,13 @@ void NBFi_Go_To_Sleep(_Bool sleep)
     old_state = sleep;
 }
 
+/**
+ * @brief	Initializes NB-Fi stack.
+ * 			Should be called after NBFi_Config_Set_Device_Info()
+ *
+ * @returns	
+ * 			- OK (always)
+ */
 nbfi_status_t NBFI_Init()
 {
     

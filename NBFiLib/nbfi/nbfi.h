@@ -9,24 +9,25 @@
 #define NBFI_TX_PKTBUF_SIZE     64
 #define NBFI_RX_PKTBUF_SIZE     32
 
+/** @brief	Mode of NB-Fi operation */
 typedef enum
 {   
-    NRX         =   0,
-    DRX         =   1,
-    CRX         =   2,
+	NRX         =   0,	/*!< Transmit only, receiver always disabled, downlink is not possible	*/
+    DRX         =   1,	/*!< Receiver activated only for short period after transmission	*/
+    CRX         =   2,	/*!< Receiver always activated. Use only on mains-powered devices	*/
     TRANSPARENT =   3,
-    OFF         =   4
-}nbfi_mode_t;
+    OFF         =   4	/*!< Radio always disabled. Transmissions are not possible	*/
+} nbfi_mode_t;
 
 typedef enum
 {
-    MACK_0      = 0,//no ack
-    MACK_1      = 1,//0x1,
-    MACK_2      = 2,//0x3,
-    MACK_4      = 4,//0x0f,
-    MACK_8      = 8,//0xff,
-    MACK_16     = 16,//0xffff,
-    MACK_32     = 32,//0,
+	MACK_0      = 0,	/*!< no ack */
+    MACK_1      = 1,	/*!< 0x1 */
+    MACK_2      = 2,	/*!< 0x3 */
+    MACK_4      = 4,	/*!< 0x0f */
+    MACK_8      = 8,	/*!< 0xff */
+    MACK_16     = 16,	/*!< 0xffff */
+    MACK_32     = 32,	/*!< 0 */
 }nbfi_mack_mode_t;
 
 typedef enum
