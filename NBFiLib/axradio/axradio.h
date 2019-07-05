@@ -36,6 +36,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define AXRADIO_MODE_UNINIT                     0x00
 #define AXRADIO_MODE_OFF                        0x01
 #define AXRADIO_MODE_DEEPSLEEP                  0x02
@@ -160,5 +164,8 @@ void axradio_setup_pincfg2(void);
 
 void axradio_isr(void);
 
-
+	
+#ifdef __cplusplus
+}
+#endif
 #endif /* AXRADIO_H */

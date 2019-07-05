@@ -275,7 +275,7 @@ nbfi_status_t NBFi_Send(uint8_t* payload, uint8_t length)
     return OK;
 }
 
-void NBFi_ProcessRxPackets(_Bool external)
+void NBFi_ProcessRxPackets(uint8_t external)
 {
     nbfi_transport_packet_t* pkt;
     uint8_t data[256];
@@ -934,9 +934,9 @@ nbfi_state_t* NBFi_get_state()
     return &nbfi_state;
 }
 
-void NBFi_Go_To_Sleep(_Bool sleep)
+void NBFi_Go_To_Sleep(uint8_t sleep)
 {
-    static _Bool old_state = 1;
+	static uint8_t old_state = 1;
     if(sleep)
     {
         nbfi.mode = OFF;

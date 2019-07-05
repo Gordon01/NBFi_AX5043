@@ -3,6 +3,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct wtimer_callback;
 struct wtimer_desc;
 
@@ -48,4 +52,7 @@ extern uint8_t wtimer_cansleep(void);
 
 void wtimer_irq(void);
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* LIBMFWTIMER_H */
