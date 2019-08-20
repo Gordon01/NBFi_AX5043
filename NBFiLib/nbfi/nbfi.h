@@ -107,8 +107,8 @@ typedef enum
 
 typedef enum
 {
-    PCB = 0,       //PCB or ANT 1
-    SMA = 1        //SMA or ANT 2
+	PCB = 0,		/*!< PCB or ANT 1 */
+    SMA = 1			/*!< SMA or ANT 2 */
 }rf_antenna_t;
 
 typedef enum
@@ -138,6 +138,10 @@ enum nbfi_func_t
     NBFI_RESET
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void 	        NBFI_reg_func(uint8_t name, void*);
 nbfi_status_t   NBFI_Init();
 void            NBFi_Go_To_Sleep(uint8_t sleep);
@@ -149,4 +153,8 @@ uint8_t         NBFi_can_sleep();
 uint32_t        NBFi_get_RTC();
 void            NBFi_set_RTC(uint32_t time);
 
+#ifdef __cplusplus
+}
+#endif
+	
 #endif // NBFI_H
