@@ -92,11 +92,12 @@ typedef struct
 
 typedef enum
 {
-    OK = 0,
-    ERR = 1,
-    ERR_RF_BUSY = 2,
-    ERR_ACK_LOST = 3,
-    ERR_BUFFER_FULL = 4
+    OK					= 0,
+    ERR					= 1,
+    ERR_RF_BUSY			= 2,
+    ERR_ACK_LOST		= 3,
+    ERR_BUFFER_FULL		= 4,
+	ERR_UNINITIALIZED	= 5
 }nbfi_status_t;
 
 // NB-Fi header

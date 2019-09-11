@@ -165,6 +165,11 @@ nbfi_status_t NBFi_Send(uint8_t* payload, uint8_t length)
     nbfi_transport_packet_t* packet;
     uint8_t groupe = 0;
     uint8_t len = length;
+	
+	if (nbfi.tx_freq == 0)
+	{
+		return ERR_UNINITIALIZED;
+	}
     
     if(__nbfi_lock_unlock_nbfi_irq) __nbfi_lock_unlock_nbfi_irq(1);
     
@@ -997,8 +1002,7 @@ nbfi_status_t NBFI_Init()
       NBFi_Force_process();
       __nbfi_measure_voltage_or_temperature(1);
       ScheduleTask(&nbfi_heartbeat_desc, NBFi_SendHeartBeats, RELATIVE, SECONDS(1));
-    }
-    
+    }    
     return OK;
 }
 
