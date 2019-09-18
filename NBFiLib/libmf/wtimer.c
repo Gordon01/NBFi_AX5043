@@ -183,7 +183,7 @@ static uint8_t wtimer_checkexpired(void)
 
 uint8_t wtimer_cansleep(void)
 {
-	if (!wtimer_runcallbacks_not_processed
+	if (!wtimer_runcallbacks_not_processed)
 	{
 		return 1;
 	} 
