@@ -166,7 +166,7 @@ nbfi_status_t NBFi_Send(uint8_t* payload, uint8_t length)
     uint8_t groupe = 0;
     uint8_t len = length;
 	
-	if (nbfi.tx_freq == 0)
+	if (nbfi.max_payload_len == 0)
 	{
 		return ERR_UNINITIALIZED;
 	}
