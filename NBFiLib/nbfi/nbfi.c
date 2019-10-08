@@ -603,7 +603,10 @@ static void NBFi_ProcessTasks(struct wtimer_desc *desc)
         ScheduleTask(desc, 0, RELATIVE, SECONDS(30));
         return;
    }
-   if((rf_busy == 0)&&(transmit == 0)&&!((need_to_calc_noise == 1)&&(rf_state == STATE_RX)))
+   if (		(rf_busy == 0)
+	   &&	(transmit == 0)
+	   &&  !(	(need_to_calc_noise == 1)
+			&&	(rf_state == STATE_RX)))
    {
         switch(nbfi_active_pkt->state)
         {
