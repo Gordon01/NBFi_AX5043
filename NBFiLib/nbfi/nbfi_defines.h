@@ -10,6 +10,7 @@
 #define RF_MAX_POWER	15
 #define RF_MIN_POWER	0
 #define BAND_ID         UL868800_DL864000
+//#define BAND_ID         UL864000_DL446000  // KZ
 
 #define SEND_INFO_INTERVAL      2592000  //one time per month
 #define MAKE_OSCCAL_INTERVAL    30
