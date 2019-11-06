@@ -286,12 +286,12 @@ uint32_t ax5043_spi_read24(uint32_t add)
 }
 
 
-void ax5043_tcxo_set_reset(uint8_t set)
+inline void ax5043_tcxo_set_reset(uint8_t set)
 {
 	ax5043_spi_write(AX5043_PINFUNCPWRAMP, set);
 }
 
-void ax5043_hard_reset()
+inline void ax5043_hard_reset()
 {
     if(__ax5043_on_off_pwr)
     {

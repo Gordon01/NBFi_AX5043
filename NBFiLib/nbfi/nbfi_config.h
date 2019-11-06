@@ -123,5 +123,6 @@ _Bool NBFi_Config_Parser(uint8_t* buf);
 void NBFi_Clear_Saved_Configuration();
 void NBFi_Config_Set_FastDl(_Bool, _Bool);
 _Bool NBFi_Is_Mode_Normal();
+_Bool NBFi_Config_Send_Mode(_Bool, uint8_t);
 
 #endif // NBFI_CONFIG_H

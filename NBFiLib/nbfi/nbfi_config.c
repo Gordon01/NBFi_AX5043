@@ -102,7 +102,6 @@ extern nbfi_transport_packet_t* nbfi_active_pkt;
 static _Bool NBFi_Config_Rate_Change(uint8_t rx_tx, nbfi_rate_direct_t dir );
 _Bool NBFi_Config_Tx_Power_Change(nbfi_rate_direct_t dir);
 void NBFi_Config_Return();
-_Bool NBFi_Config_Send_Mode(_Bool, uint8_t);
 void NBFi_Config_Set_Default();
 void NBFi_ReadConfig(nbfi_settings_t *settings);
 void NBFi_WriteConfig();
